@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>HomePro Connect</title>
   <link rel="stylesheet" href="assets/style.css" />
+  <link rel="manifest" href="manifest.json" />
 </head>
-
 <body>
-
   <header>
     <div class="brand">
       <div class="logo">HP</div>
@@ -25,7 +24,6 @@
   </header>
 
   <main>
-
     <!-- ✅ GitHub Pages Test Message (Merged Here) -->
     <section class="panel">
       <h1>GitHub Pages is working 🚀</h1>
@@ -91,13 +89,19 @@
         </div>
       </div>
     </div>
-
   </main>
 
   <footer>HomePro Connect • Demo UI</footer>
-
   <script src="assets/js/app.js"></script>
 
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(() => console.log('Service Worker Registered'))
+        .catch(err => console.log('Service Worker Registration Failed', err));
+    }
+  </script>
 </body>
 </html>
+
 
