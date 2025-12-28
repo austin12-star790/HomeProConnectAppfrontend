@@ -1,0 +1,206 @@
+/* ============================= */
+/* Base & Reset                  */
+/* ============================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.5;
+    padding: 20px;
+}
+
+h1, h2, h3, h4 {
+    margin-bottom: 0.5rem;
+    color: #222;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ============================= */
+/* Forms & Inputs                */
+/* ============================= */
+form {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+form label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+}
+
+form input, form textarea {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+form button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* ============================= */
+/* Profile & Cards               */
+/* ============================= */
+.card {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+}
+
+.profile-info {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.profile-info span {
+    font-weight: bold;
+}
+
+.profile-info small {
+    display: block;
+    color: #666;
+}
+
+/* ============================= */
+/* Password Form                 */
+/* ============================= */
+#passwordForm {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#passwordForm label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+}
+
+#passwordForm input {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+/* ============================= */
+/* Theme Toggle Button           */
+/* ============================= */
+.theme-toggle {
+    background: #111827;
+    color: #f5f5f5;
+    padding: 8px 14px;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    float: right;
+    margin-bottom: 1rem;
+}
+
+.theme-toggle:hover {
+    background: #1e293b;
+}
+
+/* ============================= */
+/* Notifications & Alerts        */
+/* ============================= */
+.alert {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.alert.success {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.alert.error {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+/* ============================= */
+/* Dark Mode Styles              */
+/* ============================= */
+body.dark-mode {
+    background-color: #1f2937;
+    color: #f5f5f5;
+}
+
+body.dark-mode .card,
+body.dark-mode form {
+    background-color: #374151;
+    color: #f5f5f5;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+body.dark-mode input,
+body.dark-mode textarea {
+    background-color: #4b5563;
+    border: 1px solid #6b7280;
+    color: #f5f5f5;
+}
+
+body.dark-mode button {
+    background-color: #2563eb;
+    color: #fff;
+}
+
+body.dark-mode button:hover {
+    background-color: #1d4ed8;
+}
+
+body.dark-mode a {
+    color: #3b82f6;
+}
+
+body.dark-mode .theme-toggle {
+    background: #6b7280;
+    color: #f5f5f5;
+    border-color: #9ca3af;
+}
+
+body.dark-mode .theme-toggle:hover {
+    background: #4b5563;
+}

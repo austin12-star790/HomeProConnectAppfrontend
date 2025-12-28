@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Calendar Authorization</title>
+  <style>
+    body { font-family: sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; }
+    .container { text-align:center; }
+    .loading { font-size:1.2rem; color:#333; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <p class="loading">Connecting to Google Calendar...</p>
+  </div>
+
+  <script>
+    // Capture the "code" query param from Google redirect
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+
+    if (!code) {
+      document.querySelector('.loading').textContent = '❌ No code found. Authorization failed.';
+    } else {
+      // Send code to backend to exchange for tokens
+      (async () => {
+        try {
+          const token = localStorage.getItem('token');
+          if (!token) throw new Error('You must be logged in first.');
+
+          const res = await fetch('/api/google/callback', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ code })
+          });
+
+          const data = await res.json();
+
+          if (res.ok) {
+            localStorage.setItem('googleTokens', JSON.stringify(data.tokens));
+            document.querySelector('.loading').textContent = '✅ Google Calendar connected successfully!';
+          } else {
+            document.querySelector('.loading').textContent = '❌ Authorization failed: ' + (data.error || '');
+          }
+
+          // Redirect to dashboard after 2 seconds
+          setTimeout(() => { window.location.href = '/dashboard.html'; }, 2000);
+
+        } catch (err) {
+          console.error(err);
+          document.querySelector('.loading').textContent = '❌ Network or server error.';
+        }
+      })();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>HomePro Connect – Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- PWA Manifest & Theme Color -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007BFF">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/global.css">
+    <link id="themeStylesheet" rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2 class="logo">HomePro</h2>
+
+        <ul class="menu">
+            <li class="active">Dashboard</li>
+            <li>Bookings</li>
+            <li>Providers</li>
+            <li>Notifications</li>
+            <li id="logoutBtn">Logout</li>
+        </ul>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+        <!-- Top Bar -->
+        <div class="topbar">
+
+            <div class="profile-info">
+                <span id="profile-name">Loading...</span>
+                <small id="profile-role"></small>
+            </div>
+
+            <!-- 🌙 Theme Toggle Button -->
+            <button id="themeToggle" class="theme-toggle">
+                🌙 Dark Mode
+            </button>
+
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="content">
+
+            <!-- Section 1: Quick Welcome -->
+            <section class="card">
+                <h2>Welcome, <span id="userName"></span></h2>
+            </section>
+
+            <!-- Section 2: Manual Booking Form -->
+            <section class="card">
+                <h3>Book a Provider Manually</h3>
+
+                <form id="bookingForm">
+                    <input type="text" id="providerId" placeholder="Provider ID" required>
+                    <input type="date" id="date" required>
+                    <input type="time" id="time" required>
+                    <button type="submit">Book</button>
+                </form>
+            </section>
+
+            <!-- Section 3: Provider List -->
+            <section class="card">
+                <h2>Available Providers</h2>
+
+                <input type="text" id="providerSearch" placeholder="Search provider by name..." class="searchBox">
+
+                <div id="providerList" class="provider-list">
+                    <p>Loading providers...</p>
+                </div>
+            </section>
+
+            <!-- Section 4: Your Bookings -->
+            <section class="card">
+                <h2>Your Bookings</h2>
+
+                <ul id="bookingsList"></ul>
+
+                <div id="upcomingBookings" class="booking-list">
+                    <p>Loading bookings...</p>
+                </div>
+            </section>
+
+            <!-- Section 5: Notifications -->
+            <section class="card">
+                <h2>Notifications</h2>
+                <div id="notifications-list">
+                    <p>Loading notifications...</p>
+                </div>
+            </section>
+
+            <!-- Section 6: Profile -->
+            <section class="card">
+                <h2>Profile</h2>
+                <p><strong>Name:</strong> <span id="profile-name"></span></p>
+                <p><strong>Email:</strong> <span id="profile-email"></span></p>
+                <p><strong>Role:</strong> <span id="profile-role"></span></p>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookModal" class="modal">
+        <div class="modal-content">
+
+            <h2>Book Provider</h2>
+            <p id="bookingProviderName" class="gray"></p>
+
+            <label>Choose Date & Time:</label>
+            <input type="datetime-local" id="bookDate">
+
+            <label>Notes (optional):</label>
+            <textarea id="bookNotes"></textarea>
+
+            <div class="modal-actions">
+                <button class="btn" id="confirmBookingBtn">Confirm Booking</button>
+                <button class="btn cancel" onclick="document.getElementById('bookModal').style.display='none'">
+                    Cancel
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JS Files -->
+    <script src="js/api.js" type="module"></script>
+    <script src="js/dashboard.js" type="module"></script>
+
+    <!-- Register Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('ServiceWorker registered', reg))
+                    .catch(err => console.log('ServiceWorker failed', err));
+            });
+        }
+    </script>
+
+</body>
+</html>
+
+
+

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HomePro Connect</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">HP</div>
+      <div>
+        <h1 class="logo-text">HomePro Connect</h1>
+        <div class="tag">Connect. Book. Relax.</div>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="switch small">Role: <strong id="roleLabel">Customer</strong></div>
+      <button class="btn ghost" id="toggleRole">I'm a provider</button>
+      <button class="btn" id="openProviderSignup">Provider Sign Up</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="panel">
+        <h2>Find & Book Trusted Home Services</h2>
+        <p class="small">Search providers near you, compare ratings, and book instantly.</p>
+
+        <div class="search">
+          <input id="q" placeholder="Search service or provider" />
+          <select id="category"></select>
+          <button class="btn" id="searchBtn">Search</button>
+        </div>
+
+        <div class="filters" id="filterChips"></div>
+        <div class="providers-grid" id="providers"></div>
+      </div>
+
+      <aside class="panel">
+        <h3>Your Bookings</h3>
+        <p class="small">Upcoming bookings (stored locally for demo)</p>
+        <div id="upcoming" class="book-list"></div>
+
+        <hr />
+
+        <h4>Quick Actions</h4>
+        <button class="btn" id="quickBook">Quick Book: Home Cleaning</button>
+        <button class="btn ghost" id="clearStorage">Clear demo data</button>
+      </aside>
+    </section>
+
+    <section class="panel" id="providerSignup" style="display:none">
+      <h3>Provider Sign Up</h3>
+      <div class="row">
+        <input id="provName" placeholder="Provider name" />
+        <select id="provService"></select>
+      </div>
+      <div class="row">
+        <button class="btn" id="registerProvider">Register</button>
+        <button class="btn ghost" id="cancelSignup">Cancel</button>
+      </div>
+    </section>
+
+    <div class="modal-backdrop" id="modal">
+      <div class="modal">
+        <h3 id="modalTitle">Book Service</h3>
+        <div id="selectedProviderMeta" class="small"></div>
+
+        <label>Your name</label>
+        <input id="customerName" type="text" />
+
+        <label>When</label>
+        <input id="when" type="datetime-local" />
+
+        <label>Notes</label>
+        <textarea id="notes" rows="3"></textarea>
+
+        <div class="modal-actions">
+          <button class="btn ghost" id="closeModal">Cancel</button>
+          <button class="btn" id="confirmBooking">Confirm Booking</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>HomePro Connect • Demo UI</footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

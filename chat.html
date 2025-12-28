@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HomePro Connect — Chat</title>
+  <link rel="stylesheet" href="chat.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">HomePro Connect</div>
+
+      <div class="userbox">
+        <input id="loginUser" placeholder="username" />
+        <input id="loginPass" type="password" placeholder="password" />
+        <div class="login-actions">
+          <button id="btnLogin">Login</button>
+          <button id="btnRegister">Register</button>
+        </div>
+      </div>
+
+      <div class="contacts">
+        <h4>Contacts</h4>
+        <ul id="contactsList" class="contacts-list"></ul>
+      </div>
+    </aside>
+
+    <main class="chat-area">
+      <header class="chat-header">
+        <div class="chat-title">Support</div>
+        <div id="presence" class="presence">Offline</div>
+      </header>
+
+      <section id="messages" class="messages" aria-live="polite"></section>
+
+      <div class="composer">
+        <div class="left-controls">
+          <label class="file-label">
+            📎
+            <input id="filePicker" type="file" multiple>
+          </label>
+
+          <button id="recordBtn" class="icon-btn" title="Record voice">🎙</button>
+          <button id="emojiBtn" class="icon-btn" title="Emoji">😊</button>
+        </div>
+
+        <input id="messageInput" class="message-input" placeholder="Type a message" autocomplete="off" />
+        <button id="sendBtn" class="send-btn">Send</button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Socket.io client (served by Socket.io server) -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="chat.js"></script>
+</body>
+</html>

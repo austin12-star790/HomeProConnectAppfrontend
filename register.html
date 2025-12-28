@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePro Connect – Register</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Custom Auth Page Styles -->
+    <link rel="stylesheet" href="assets/css/auth.css">
+</head>
+
+<body>
+
+    <div class="auth-wrapper">
+
+        <div class="auth-box">
+
+            <h2>Create Your Account</h2>
+            <p class="subtitle">Join HomePro Connect and book trusted home service professionals.</p>
+
+            <!-- REGISTER FORM -->
+            <form id="registerForm">
+
+                <div class="input-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="John Doe" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="example@mail.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Create Password</label>
+                    <input type="password" id="password" name="password" placeholder="********" required>
+                </div>
+
+                <button type="submit" class="btn-primary">Create Account</button>
+
+                <p class="switch-text">
+                    Already have an account?
+                    <a href="login.html">Login here</a>
+                </p>
+
+            </form>
+
+            <div class="divider">
+                <span>or</span>
+            </div>
+
+            <!-- GOOGLE LOGIN BUTTON -->
+            <a href="/api/google/auth" class="google-btn">
+                <img src="assets/img/google-icon.png" alt="Google Login">
+                Sign Up with Google
+            </a>
+
+        </div>
+
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+
+</body>
+</html>

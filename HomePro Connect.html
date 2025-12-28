@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HomePro Connect — Book Local Providers</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#06b6d4;--muted:#94a3b8;--glass: rgba(255,255,255,0.04)}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial; background:linear-gradient(180deg,#071325 0%, #071827 100%);color:#e6eef6}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;backdrop-filter: blur(6px)}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700}
+    h1.logo-text{margin:0;font-size:18px}
+    .controls{display:flex;gap:8px;align-items:center}
+    .btn{background:var(--accent);border:none;color:#032; padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    main{padding:20px;max-width:1100px;margin:0 auto}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:center;margin-bottom:18px}
+    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:18px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+
+    .search{display:flex;gap:10px;align-items:center}
+    .search input, .search select{flex:1;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    .filters{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+    .chip{padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);background:var(--glass);cursor:pointer;color:var(--muted);font-size:13px}
+
+    .providers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:18px}
+    .card{padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+    .card h3{margin:0 0 6px 0}
+    .meta{font-size:13px;color:var(--muted);margin-bottom:8px}
+    .rating{display:inline-block;background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;font-weight:700}
+    .card button{margin-top:10px}
+
+    /* booking modal */
+    .modal-backdrop{position:fixed;inset:0;background:linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.8));display:none;align-items:center;justify-content:center;padding:24px}
+    .modal{width:100%;max-width:520px;background:linear-gradient(180deg,#071126, #071827);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.04)}
+    label{display:block;font-size:13px;color:var(--muted);margin-top:8px}
+    input[type=text],input[type=datetime-local],textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit}
+
+    .small{font-size:12px;color:var(--muted)}
+
+    footer{max-width:1100px;margin:28px auto 80px auto;color:var(--muted);text-align:center}
+
+    /* provider view */
+    .switch{display:flex;gap:8px;align-items:center}
+    .book-list{margin-top:12px}
+    .booking-item{padding:10px;border-radius:8px;background:rgba(255,255,255,0.02);margin-bottom:8px;border:1px solid rgba(255,255,255,0.02)}
+
+    /* responsive */
+    @media (max-width:900px){.hero{grid-template-columns:1fr;}.brand h1{display:none}}
+
+    /* micro interactions */
+    .fade-in{animation:fade .45s ease both}
+    @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">HP</div>
+      <div>
+        <h1 class="logo-text">HomePro Connect</h1>
+        <div style="font-size:12px;color:var(--muted)">Connect. Book. Relax.</div>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="switch small">Role: <strong id="roleLabel">Customer</strong></div>
+      <button class="btn ghost" id="toggleRole">I'm a provider</button>
+      <button class="btn" id="openProviderSignup">Provider Sign Up</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="panel">
+        <h2 style="margin:0">Find & Book Trusted Home Services</h2>
+        <p class="small" style="margin-top:8px;color:var(--muted)">Search providers near you, compare ratings, and book instantly.</p>
+
+        <div class="search" style="margin-top:12px">
+          <input id="q" placeholder="Search service or provider — e.g. plumber, cleaning" />
+          <select id="category">
+            <option value="">All services</option>
+            <option>Plumbing</option>
+            <option>Electrical</option>
+            <option>Cleaning</option>
+            <option>Handyman</option>
+            <option>AC Repair</option>
+          </select>
+          <button class="btn" id="searchBtn">Search</button>
+        </div>
+
+        <div class="filters" id="filterChips">
+          <div class="chip" data-filter="rating">Top rated</div>
+          <div class="chip" data-filter="instant">Instant book</div>
+          <div class="chip" data-filter="near">Within 10 km</div>
+        </div>
+
+        <div class="providers-grid" id="providers"></div>
+
+      </div>
+
+      <aside class="panel">
+        <h3 style="margin-top:0">Your Bookings</h3>
+        <p class="small">See upcoming bookings and confirmations. Bookings saved locally (demo).</p>
+        <div id="upcoming" class="book-list"></div>
+
+        <hr style="border:none;height:1px;background:rgba(255,255,255,0.03);margin:12px 0" />
+
+        <h4 style="margin:6px 0">Quick Actions</h4>
+        <button class="btn" id="quickBook">Quick Book: Home Cleaning</button>
+        <div style="height:12px"></div>
+        <button class="btn ghost" id="clearStorage">Clear demo data</button>
+      </aside>
+    </section>
+
+    <!-- provider signup panel (lightweight demo) -->
+    <section class="panel fade-in" id="providerSignup" style="display:none;margin-top:12px">
+      <h3 style="margin-top:0">Provider Sign Up (Demo)</h3>
+      <p class="small">This simulates provider registration. In a real app you'd POST to your backend, verify the provider, and then allow them to accept bookings.</p>
+      <div style="display:grid;grid-template-columns:1fr 200px;gap:12px">
+        <input id="provName" placeholder="Provider name" />
+        <select id="provService"><option>Cleaning</option><option>Plumbing</option><option>Electrical</option><option>Handyman</option></select>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="btn" id="registerProvider">Register</button>
+        <button class="btn ghost" id="cancelSignup">Cancel</button>
+      </div>
+    </section>
+
+    <!-- Booking modal -->
+    <div class="modal-backdrop" id="modal">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <h3 id="modalTitle">Book Service</h3>
+        <div id="selectedProviderMeta" class="small" style="margin-bottom:8px;color:var(--muted)"></div>
+        <label for="customerName">Your name</label>
+        <input id="customerName" type="text" placeholder="Full name" />
+        <label for="when">When</label>
+        <input id="when" type="datetime-local" />
+        <label for="notes">Notes</label>
+        <textarea id="notes" rows="3" placeholder="Extra details, preferred entrance, etc"></textarea>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+          <button class="btn ghost" id="closeModal">Cancel</button>
+          <button class="btn" id="confirmBooking">Confirm Booking</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    HomePro Connect • Demo UI — bookings stored locally. Replace localStorage code with a backend API for real deployments.
+  </footer>
+
+  <script>
+    /************************************************
+     * HomePro Connect — Single-file demo
+     * - Frontend only (HTML/CSS/JS)
+     * - Uses localStorage for demo persistence
+     * - Comments show where to call real APIs
+     ************************************************/
+
+    // Demo provider data — in a real app this would be fetched from your server
+    const demoProviders = [
+      {id:'p1',name:'Aqua Plumbing',service:'Plumbing',rating:4.8,price:45,instant:true,desc:'Fast repair & installation',distance:6},
+      {id:'p2',name:'Spark Electric',service:'Electrical',rating:4.6,price:55,instant:false,desc:'Licensed electrician',distance:12},
+      {id:'p3',name:'Spotless Cleaners',service:'Cleaning',rating:4.9,price:30,instant:true,desc:'Home & office cleaning',distance:4},
+      {id:'p4',name:'Handy Manny',service:'Handyman',rating:4.7,price:40,instant:true,desc:'Furniture, mounting, small jobs',distance:8},
+    ];
+
+    // DOM refs
+    const providersEl = document.getElementById('providers');
+    const qEl = document.getElementById('q');
+    const categoryEl = document.getElementById('category');
+    const searchBtn = document.getElementById('searchBtn');
+    const filterChips = document.getElementById('filterChips');
+    const modal = document.getElementById('modal');
+    const selectedProviderMeta = document.getElementById('selectedProviderMeta');
+    const customerName = document.getElementById('customerName');
+    const whenEl = document.getElementById('when');
+    const notesEl = document.getElementById('notes');
+    const confirmBooking = document.getElementById('confirmBooking');
+    const closeModal = document.getElementById('closeModal');
+    const upcomingEl = document.getElementById('upcoming');
+    const toggleRole = document.getElementById('toggleRole');
+    const roleLabel = document.getElementById('roleLabel');
+    const providerSignup = document.getElementById('providerSignup');
+    const openProviderSignup = document.getElementById('openProviderSignup');
+    const registerProvider = document.getElementById('registerProvider');
+    const provName = document.getElementById('provName');
+    const provService = document.getElementById('provService');
+    const cancelSignup = document.getElementById('cancelSignup');
+    const quickBook = document.getElementById('quickBook');
+    const clearStorage = document.getElementById('clearStorage');
+
+    let providers = loadProviders();
+    let bookings = loadBookings();
+    let selectedProvider = null;
+    let role = 'customer'; // or 'provider'
+
+    function loadProviders(){
+      // Try to load providers from localStorage (simulating a backend)
+      const raw = localStorage.getItem('hpc_providers');
+      if(raw) return JSON.parse(raw);
+      localStorage.setItem('hpc_providers', JSON.stringify(demoProviders));
+      return demoProviders.slice();
+    }
+    function saveProviders(){ localStorage.setItem('hpc_providers', JSON.stringify(providers)); }
+
+    function loadBookings(){
+      const raw = localStorage.getItem('hpc_bookings');
+      if(!raw) return [];
+      try{ return JSON.parse(raw); }catch(e){return []}
+    }
+    function saveBookings(){ localStorage.setItem('hpc_bookings', JSON.stringify(bookings)); }
+
+    function renderProviders(list){
+      providersEl.innerHTML = '';
+      if(list.length===0){ providersEl.innerHTML = '<div class="small">No providers match your search.</div>'; return }
+      list.forEach(p=>{
+        const card = document.createElement('div'); card.className='card fade-in';
+        card.innerHTML = `
+          <h3>${escapeHtml(p.name)}</h3>
+          <div class="meta">${escapeHtml(p.service)} • ${p.distance} km away</div>
+          <div class="small">${escapeHtml(p.desc)}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+            <div class="rating">⭐ ${p.rating}</div>
+            <div style="text-align:right"><div class="small">from</div><div style="font-weight:700">$${p.price}</div></div>
+          </div>
+          <button class="btn" data-id="${p.id}">Book</button>
+        `;
+        const btn = card.querySelector('button');
+        btn.addEventListener('click',()=>openBookingModal(p.id));
+        providersEl.appendChild(card);
+      })
+    }
+
+    function openBookingModal(providerId){
+      selectedProvider = providers.find(x=>x.id===providerId);
+      selectedProviderMeta.textContent = selectedProvider.name + ' — ' + selectedProvider.service + ' • $' + selectedProvider.price;
+      // prefills
+      customerName.value = '';
+      whenEl.value = '';
+      notesEl.value = '';
+      modal.style.display = 'flex';
+      // focus
+      setTimeout(()=>customerName.focus(),200);
+    }
+
+    function closeModalNow(){ modal.style.display='none'; selectedProvider=null; }
+    closeModal.addEventListener('click',closeModalNow);
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModalNow(); });
+
+    confirmBooking.addEventListener('click',()=>{
+      if(!selectedProvider) return alert('Select a provider first');
+      const name = customerName.value.trim();
+      const when = whenEl.value;
+      if(!name) return alert('Enter your name');
+      if(!when) return alert('Select date and time');
+      const b = { id:'b_'+Date.now(), providerId:selectedProvider.id, providerName:selectedProvider.name, customerName:name, when, notes:notesEl.value || '', created: new Date().toISOString(), status:'pending' };
+      bookings.push(b); saveBookings();
+      renderUpcoming();
+      closeModalNow();
+      toast('Booking confirmed — pending provider acceptance (demo)');
+
+      // In a real app: POST booking to your server here, then the provider would receive notification.
+      // fetch('/api/bookings', { method:'POST', body:JSON.stringify(b) }) ...
+    });
+
+    function renderUpcoming(){
+      upcomingEl.innerHTML = '';
+      if(bookings.length===0) return upcomingEl.innerHTML='<div class="small">No upcoming bookings</div>';
+      // sort by when
+      const sorted = bookings.slice().sort((a,b)=> new Date(a.when)-new Date(b.when));
+      sorted.forEach(b=>{
+        const el = document.createElement('div'); el.className='booking-item';
+        el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><div><strong>${escapeHtml(b.providerName)}</strong><div class="small">${escapeHtml(b.customerName)} • ${new Date(b.when).toLocaleString()}</div></div><div><div class="small">${escapeHtml(b.status)}</div></div></div>`;
+        upcomingEl.appendChild(el);
+      })
+    }
+
+    // search / filter
+    function runSearch(){
+      const q = qEl.value.trim().toLowerCase();
+      const cat = categoryEl.value;
+      let out = providers.slice();
+      if(q) out = out.filter(p => (p.name + ' ' + p.service + ' ' + (p.desc||'')).toLowerCase().includes(q));
+      if(cat) out = out.filter(p => p.service.toLowerCase()===cat.toLowerCase());
+      // apply chips
+      const activeChips = Array.from(filterChips.querySelectorAll('.chip.active')).map(el=>el.dataset.filter);
+      if(activeChips.includes('rating')) out = out.sort((a,b)=>b.rating-a.rating);
+      if(activeChips.includes('near')) out = out.filter(p=>p.distance<=10);
+      if(activeChips.includes('instant')) out = out.filter(p=>p.instant);
+      renderProviders(out);
+    }
+
+    searchBtn.addEventListener('click', runSearch);
+    qEl.addEventListener('keydown', (e)=>{ if(e.key==='Enter') runSearch(); });
+    filterChips.addEventListener('click', (e)=>{
+      if(!e.target.classList.contains('chip')) return;
+      e.target.classList.toggle('active');
+      runSearch();
+    });
+
+    // provider signup handlers — demo only
+    openProviderSignup.addEventListener('click', ()=>{ providerSignup.style.display='block'; provName.focus(); });
+    cancelSignup.addEventListener('click', ()=>{ providerSignup.style.display='none'; provName.value=''; });
+    registerProvider.addEventListener('click', ()=>{
+      const name = provName.value.trim(); const service = provService.value;
+      if(!name) return alert('Enter provider name');
+      const p = { id:'p_'+Date.now(), name, service, rating:4.5, price:40, instant:false, desc:'New provider', distance:10 };
+      providers.unshift(p); saveProviders(); renderProviders(providers);
+      providerSignup.style.display='none'; provName.value='';
+      toast('Provider registered (demo)');
+      // In real app: POST /api/providers
+    });
+
+    // role toggle — in real product roles are separate flows and auth
+    toggleRole.addEventListener('click', ()=>{
+      role = role==='customer' ? 'provider' : 'customer';
+      roleLabel.textContent = role==='customer' ? 'Customer' : 'Provider';
+      toggleRole.textContent = role==='customer' ? "I'm a provider" : "Back to customer";
+      // When provider, show only providers that match the logged-in provider id (demo) or show provider dashboard
+      if(role==='provider') {
+        // For demo we show bookings for first provider
+        showProviderDashboard();
+      } else {
+        renderProviders(providers);
+      }
+    });
+
+    function showProviderDashboard(){
+      // Demo: show bookings for provider p1 (or the first provider)
+      const pid = providers[0] && providers[0].id;
+      const myBookings = bookings.filter(b=>b.providerId===pid);
+      // Replace right aside content with provider view (quick)
+      upcomingEl.innerHTML = '';
+      if(myBookings.length===0) upcomingEl.innerHTML = '<div class="small">No bookings for your account.</div>';
+      myBookings.forEach(b=>{
+        const el = document.createElement('div'); el.className='booking-item';
+        el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><div><strong>${escapeHtml(b.customerName)}</strong><div class="small">${new Date(b.when).toLocaleString()}</div></div><div><button class="btn" data-id="${b.id}">Accept</button></div></div>`;
+        const btn = el.querySelector('button'); btn.addEventListener('click', ()=>{
+          b.status='accepted'; saveBookings(); renderUpcoming(); toast('Booking accepted (demo)');
+        });
+        upcomingEl.appendChild(el);
+      });
+    }
+
+    // quick book
+    quickBook.addEventListener('click', ()=>{
+      // choose first cleaning provider
+      const p = providers.find(x=>x.service==='Cleaning') || providers[0];
+      if(!p) return alert('No provider available');
+      openBookingModal(p.id);
+      customerName.value = 'Demo User';
+      whenEl.value = new Date(Date.now()+3600*1000).toISOString().slice(0,16); // +1h
+    });
+
+    clearStorage.addEventListener('click', ()=>{
+      if(!confirm('Clear demo data?')) return; localStorage.removeItem('hpc_bookings'); localStorage.removeItem('hpc_providers'); providers = loadProviders(); bookings = loadBookings(); renderProviders(providers); renderUpcoming(); toast('Demo data cleared');
+    });
+
+    // small toast function
+    function toast(msg){
+      const t = document.createElement('div'); t.textContent=msg; t.style.position='fixed'; t.style.bottom='18px'; t.style.right='18px'; t.style.background='var(--accent)'; t.style.color='#012'; t.style.padding='10px 14px'; t.style.borderRadius='8px'; t.style.boxShadow='0 6px 18px rgba(2,6,23,0.6)'; document.body.appendChild(t);
+      setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateY(8px)'; setTimeout(()=>t.remove(),400) },2400);
+    }
+
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m];}); }
+
+    // initial render
+    renderProviders(providers);
+    renderUpcoming();
+
+    // accessibility: close modal on Esc
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ if(modal.style.display==='flex') closeModalNow(); } });
+
+    // ---- Notes for integration ----
+    // Replace localStorage operations with real API calls:
+    // - GET /api/providers -> set providers
+    // - POST /api/providers -> register provider
+    // - POST /api/bookings -> create booking
+    // - GET /api/bookings?providerId=... -> provider dashboard
+    // Use authentication (JWT / sessions) and server-side verification before accepting bookings.
+
+  </script>
+</body>
+</html>

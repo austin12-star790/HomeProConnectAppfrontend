@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Provider Dashboard — HomePro Connect</title>
+
+  <!-- Use your admin.css (or main stylesheet) -->
+  <link rel="stylesheet" href="/css/admin.css" />
+
+  <style>
+    /* Quick minor overrides for provider dashboard layout */
+    .provider-header { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .profile-mini { display:flex; align-items:center; gap:10px; }
+    .profile-mini img { width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid #fff;}
+    .page-actions { margin-bottom:16px; display:flex; gap:8px; }
+    .booking-card { background:#fff; padding:14px; border-radius:8px; box-shadow:0 1px 6px rgba(0,0,0,0.06); margin-bottom:10px; }
+    .status-pill { padding:6px 8px; border-radius:999px; font-weight:600; font-size:0.85rem; }
+    .status-pending { background:#fff9db; color:#8a6d00; }
+    .status-scheduled { background:#e6f7ff; color:#055160; }
+    .status-completed { background:#e6ffe6; color:#066a06; }
+    .status-cancelled { background:#ffe6e6; color:#8a1d1d; }
+    .small-muted { color:#666; font-size:0.9rem; }
+    .file-list { margin-top:8px; font-size:0.9rem; color:#333;}
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="sidebar-header">Provider Panel</div>
+    <ul class="sidebar-menu">
+      <li data-page="overview" class="active">Overview</li>
+      <li data-page="bookings">Bookings</li>
+      <li data-page="profile">Profile</li>
+      <li data-page="availability">Availability</li>
+      <li data-page="verification">Verification</li>
+      <li data-page="notifications">Notifications</li>
+      <li id="provider-logout">Logout</li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div class="provider-header">
+        <div>
+          <h1 id="pageTitle">Overview</h1>
+          <div class="small-muted" id="providerSub">Loading...</div>
+        </div>
+        <div class="profile-mini">
+          <img id="providerAvatar" src="/img/default-avatar.png" alt="avatar" />
+          <div>
+            <div id="providerName"><strong>Provider</strong></div>
+            <div class="small-muted" id="providerEmail"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr/>
+
+    <div id="pageContent">
+      <!-- Overview page -->
+      <div id="page-overview">
+        <div class="dashboard-cards" style="margin-bottom:18px;">
+          <div class="dashboard-card">
+            <h3 id="statUpcoming">—</h3>
+            <p>Upcoming Bookings</p>
+          </div>
+          <div class="dashboard-card">
+            <h3 id="statCompleted">—</h3>
+            <p>Completed</p>
+          </div>
+          <div class="dashboard-card">
+            <h3 id="statEarnings">—</h3>
+            <p>Estimated Earnings</p>
+          </div>
+        </div>
+
+        <h2>Next Bookings</h2>
+        <div id="overviewBookings">
+          <!-- booking cards -->
+        </div>
+      </div>
+
+      <!-- Bookings page -->
+      <div id="page-bookings" style="display:none;">
+        <div class="page-actions">
+          <input id="bookingSearch" placeholder="Search bookings..." style="padding:8px;border-radius:6px;border:1px solid #ccc;width:280px;">
+          <select id="bookingFilter">
+            <option value="all">All</option>
+            <option value="pending">Pending</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <div id="bookingsList"></div>
+      </div>
+
+      <!-- Profile page -->
+      <div id="page-profile" style="display:none;">
+        <div class="section">
+          <h2>Profile</h2>
+
+          <div style="display:flex;gap:20px;flex-wrap:wrap;">
+            <div style="flex:240px 0 0;">
+              <img id="profileAvatar" src="/img/default-avatar.png" alt="avatar" style="width:140px;height:140px;border-radius:10px;object-fit:cover;border:1px solid #ddd;">
+              <div style="margin-top:8px;">
+                <input type="file" id="profileAvatarInput" accept="image/*" />
+              </div>
+            </div>
+
+            <div style="flex:1;">
+              <label>Name</label>
+              <input id="profileName" type="text" style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;margin-bottom:8px">
+
+              <label>Email</label>
+              <input id="profileEmail" type="email" style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;margin-bottom:8px" disabled>
+
+              <label>Phone</label>
+              <input id="profilePhone" type="text" style="width:100%;padding:10px;border-radius:6px;border:1px solid #ccc;margin-bottom:8px">
+
+              <button id="saveProfile" class="btn-save">Save Profile</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Availability page -->
+      <div id="page-availability" style="display:none;">
+        <h2>Availability</h2>
+        <p class="small-muted">Set weekly availability blocks (local time).</p>
+
+        <div id="availabilityGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:760px;">
+          <!-- each day row inserted by JS -->
+        </div>
+
+        <div style="margin-top:12px;">
+          <button id="saveAvailability" class="btn-save">Save Availability</button>
+        </div>
+      </div>
+
+      <!-- Verification page -->
+      <div id="page-verification" style="display:none;">
+        <h2>Provider Verification</h2>
+        <p class="small-muted">Upload documents (ID, certificates). Admin will review.</p>
+
+        <div style="margin-top:8px;">
+          <label>Upload files</label>
+          <input id="verificationFiles" type="file" multiple accept=".jpg,.png,.pdf" />
+          <div class="file-list" id="uploadedFilesList"></div>
+
+          <div style="margin-top:12px;">
+            <button id="uploadVerification" class="btn-add">Upload for Review</button>
+          </div>
+
+          <div id="verificationStatus" style="margin-top:12px;"></div>
+        </div>
+      </div>
+
+      <!-- Notifications page -->
+      <div id="page-notifications" style="display:none;">
+        <h2>Notifications</h2>
+        <div id="notificationsList"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/js/provider-dashboard.js"></script>
+</body>
+</html>

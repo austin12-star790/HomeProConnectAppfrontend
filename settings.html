@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HomePro Connect – Settings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2 class="logo">HomePro</h2>
+        <ul class="menu">
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="bookings.html">Bookings</a></li>
+            <li><a href="providers.html">Providers</a></li>
+            <li><a href="notifications.html">Notifications</a></li>
+            <li class="active">Settings</li>
+            <li id="logoutBtn">Logout</li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+        <div class="topbar">
+            <div class="profile-info">
+                <span id="profile-name">Loading...</span>
+                <small id="profile-role"></small>
+            </div>
+            <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
+        </div>
+
+        <div class="content">
+            <section class="card">
+                <h2>Profile Settings</h2>
+                <form id="profileForm">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" placeholder="Your name" required>
+                    
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="Your email" required>
+                    
+                    <button type="submit" class="btn">Update Profile</button>
+                </form>
+            </section>
+
+            <section class="card">
+                <h2>Change Password</h2>
+                <form id="passwordForm">
+                    <label for="currentPassword">Current Password:</label>
+                    <input type="password" id="currentPassword" placeholder="Current password" required>
+                    
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" id="newPassword" placeholder="New password" required>
+                    
+                    <label for="confirmPassword">Confirm New Password:</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password" required>
+                    
+                    <button type="submit" class="btn">Change Password</button>
+                </form>
+            </section>
+
+            <section class="card">
+                <h2>Preferences</h2>
+                <div class="theme-setting">
+                    <p>Toggle Theme:</p>
+                    <button id="themeToggleBtn" class="btn">🌙 Dark Mode</button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script type="module" src="js/settings.js"></script>
+</body>
+</html>

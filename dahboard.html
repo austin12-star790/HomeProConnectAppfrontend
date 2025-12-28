@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/css/dashboard.css" />
+</head>
+<body>
+    <header>
+        <h1>Admin Dashboard</h1>
+        <nav>
+            <a href="/admin/dashboard.html">Dashboard</a>
+            <a href="/admin/users.html">Users</a>
+            <a href="/admin/bookings.html">Bookings</a>
+            <a href="/logout">Logout</a>
+        </nav>
+    </header>
+
+    <section id="stats">
+        <h2>System Overview</h2>
+        <div class="stats-grid">
+            <div class="card">
+                <h3>Total Users</h3>
+                <p id="totalUsers">0</p>
+            </div>
+            <div class="card">
+                <h3>Total Providers</h3>
+                <p id="totalProviders">0</p>
+            </div>
+            <div class="card">
+                <h3>Total Bookings</h3>
+                <p id="totalBookings">0</p>
+            </div>
+            <div class="card">
+                <h3>Pending Approvals</h3>
+                <p id="pendingApprovals">0</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="recentBookings">
+        <h2>Recent Bookings</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Provider</th>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="bookingTable"></tbody>
+        </table>
+    </section>
+
+    <script src="/js/admin-dashboard.js"></script>
+</body>
+</html>

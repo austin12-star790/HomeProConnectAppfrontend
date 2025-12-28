@@ -1,0 +1,435 @@
+/* ============================= */
+/* Reset & Base Styles           */
+/* ============================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.5;
+  padding: 20px;
+}
+
+h1, h2, h3, h4, h5 {
+  margin-bottom: 0.5rem;
+  text-align: center;
+  color: #222;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ============================= */
+/* Buttons                       */
+/* ============================= */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.btn.secondary {
+  background-color: #ccc;
+  color: #333;
+}
+
+.btn.secondary:hover {
+  background-color: #999;
+}
+
+.btn.danger {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.btn.danger:hover {
+  background-color: #c0392b;
+}
+
+.btn.small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+/* ============================= */
+/* Header / Topbar               */
+/* ============================= */
+header, header.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #007bff;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header .brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+header .logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+header .logo-text {
+  font-size: 1.25rem;
+}
+
+header .tag {
+  font-size: 0.85rem;
+  color: #e0e0e0;
+}
+
+header .controls, header .actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+header .btn.ghost {
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+}
+
+/* ============================= */
+/* Hero / Main Section           */
+/* ============================= */
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.hero .panel {
+  flex: 1;
+  min-width: 300px;
+}
+
+.hero .search {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero .search input,
+.hero .search select {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  flex: 1;
+}
+
+/* ============================= */
+/* Providers Grid                */
+/* ============================= */
+.providers-container {
+  padding: 2rem;
+}
+
+.providers-grid, .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.card, .provider-card {
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card h3, .provider-card h3, .provider-card h4 {
+  font-size: 1.2rem;
+}
+
+.card .meta {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.card .rating {
+  font-size: 0.9rem;
+  color: #f39c12;
+}
+
+.card .btn, .provider-card .btn {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+/* ============================= */
+/* Bookings Section              */
+/* ============================= */
+aside.panel, .bookings-section {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-top: 1rem;
+}
+
+.book-list, .booking-item {
+  margin-top: 0.5rem;
+}
+
+.booking-item {
+  padding: 0.5rem;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+.book-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.book-card .small {
+  font-size: 0.85rem;
+}
+
+.book-card .small.gray {
+  color: #888;
+}
+
+/* Booking Buttons */
+.book-card button.editBookingBtn {
+  background-color: #17a2b8;
+  color: #fff;
+  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+  transition: background 0.2s ease;
+}
+
+.book-card button.editBookingBtn:hover {
+  background-color: #138496;
+}
+
+.book-card button.deleteBookingBtn {
+  background-color: #e74c3c;
+  color: #fff;
+  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.book-card button.deleteBookingBtn:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+.book-card button.statusBookingBtn {
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+  transition: background 0.2s ease;
+}
+
+.book-card button.statusBookingBtn:hover {
+  background-color: #218838;
+  transform: scale(1.05);
+}
+
+/* Status Badge */
+.book-card .statusBadge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-left: 0.5rem;
+  text-transform: capitalize;
+  color: #fff;
+}
+
+.book-card .statusBadge.scheduled { background-color: #17a2b8; }
+.book-card .statusBadge.completed { background-color: #28a745; }
+.book-card .statusBadge.canceled { background-color: #e74c3c; }
+
+/* ============================= */
+/* Modals                        */
+/* ============================= */
+.modal, .modal-backdrop {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ============================= */
+/* Footer                        */
+/* ============================= */
+footer {
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+  background: #fff;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.05);
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* ============================= */
+/* Responsive                    */
+/* ============================= */
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+  }
+
+  header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .grid, .providers-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================================= */
+/* =========== LOGIN PAGE STYLES ========================== */
+/* ========================================================= */
+body.login-page {
+  background: #f4f6f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 0;
+}
+
+.login-container {
+  background: #fff;
+  padding: 2rem 3rem;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0 1rem 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 0.75rem;
+  background: #007BFF;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-container button:hover {
+  background: #0056b3;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* ============================= */
+/* Theme Toggle Button            */
+/* ============================= */
+.theme-toggle {
+    background: #111827;
+    color: #f5f5f5;
+    padding: 10px 16px;
+    border: 1px solid #374151;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    float: right;
+}
+
+.theme-toggle:hover {
+    background: #1e293b;
+}
+
+
+
+
+
+
+  

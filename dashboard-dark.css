@@ -1,0 +1,236 @@
+/* ==========================================================
+   DARK MODE — GLOBAL
+   ========================================================== */
+
+body {
+    background: #0f0f14;
+    color: #e5e7eb;
+    font-family: "Segoe UI", Arial, sans-serif;
+    margin: 0;
+    transition: 0.3s ease;
+}
+
+/* Smooth transitions everywhere */
+* {
+    transition: background 0.3s, color 0.3s, border 0.3s;
+}
+
+/* ==========================================================
+   SIDEBAR (Dark)
+   ========================================================== */
+
+.sidebar {
+    width: 240px;
+    background: #111827;
+    color: #f3f4f6;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 20px;
+    box-shadow: 2px 0px 10px rgba(0,0,0,0.6);
+}
+
+.sidebar .logo {
+    font-size: 24px;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.sidebar .menu li {
+    padding: 12px 0;
+    cursor: pointer;
+    font-size: 16px;
+    color: #c7cdd7;
+}
+
+.sidebar .menu li:hover,
+.sidebar .menu .active {
+    color: #38bdf8;
+}
+
+/* ==========================================================
+   MAIN CONTAINER (Dark)
+   ========================================================== */
+
+.main {
+    margin-left: 240px;
+    padding: 20px;
+}
+
+/* Top bar */
+.topbar {
+    background: #1a1d24;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.8);
+}
+
+.profile-info span {
+    font-weight: bold;
+    color: #f3f4f6;
+}
+
+.profile-info small {
+    color: #9ca3af;
+}
+
+/* ==========================================================
+   CONTENT SECTIONS (Dark Cards)
+   ========================================================== */
+
+.content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #181a20;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0px 3px 12px rgba(0,0,0,0.7);
+    border: 1px solid #2c2f36;
+}
+
+.card h2 {
+    color: #f3f4f6;
+}
+
+/* ==========================================================
+   SEARCH BAR
+   ========================================================== */
+
+.searchBox {
+    width: 100%;
+    padding: 10px;
+    background: #1f2229;
+    border-radius: 12px;
+    color: #e5e7eb;
+    border: 1px solid #3a3f47;
+}
+
+/* ==========================================================
+   PROVIDER LIST
+   ========================================================== */
+
+.provider-card {
+    background: #1f2229;
+    border: 1px solid #2c2f36;
+    padding: 15px;
+    border-radius: 14px;
+}
+
+.provider-card h3 {
+    color: #f3f4f6;
+}
+
+.provider-card p {
+    color: #9ca3af;
+}
+
+/* ==========================================================
+   BOOKINGS LIST
+   ========================================================== */
+
+.book-card {
+    background: #1f2229;
+    border: 1px solid #2c2f36;
+    padding: 15px;
+    border-radius: 12px;
+}
+
+/* Status badges */
+.statusBadge {
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #fff;
+}
+
+.statusBadge.scheduled {
+    background: #2563eb;
+}
+
+.statusBadge.completed {
+    background: #059669;
+}
+
+/* ==========================================================
+   BUTTONS
+   ========================================================== */
+
+.btn {
+    padding: 8px 14px;
+    background: #111827;
+    border: 1px solid #374151;
+    color: #f3f4f6;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: #1e293b;
+}
+
+.btn.cancel {
+    background: #b91c1c;
+}
+
+.btn.cancel:hover {
+    background: #dc2626;
+}
+
+/* ==========================================================
+   MODAL (Dark)
+   ========================================================== */
+
+.modal {
+    background: rgba(0,0,0,0.75);
+    display: none;
+    position: fixed;
+    inset: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    width: 350px;
+    background: #1a1d24;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #2c2f36;
+}
+
+.modal-content input,
+.modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    background: #1f2229;
+    border-radius: 10px;
+    border: 1px solid #3a3f47;
+    color: #f3f4f6;
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 180px;
+    }
+    .main {
+        margin-left: 180px;
+    }
+}
+
+@media (max-width: 600px) {
+    .sidebar {
+        display: none;
+    }
+    .main {
+        margin-left: 0;
+    }
+}

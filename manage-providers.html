@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Manage Providers | HomePro Connect</title>
+  <link rel="stylesheet" href="/css/admin.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin:20px; background:#f5f5f5; }
+    h1 { margin-bottom: 20px; }
+    .provider-table { width:100%; border-collapse: collapse; margin-bottom:20px; background:#fff; }
+    .provider-table th, .provider-table td { border:1px solid #ddd; padding:8px; text-align:left; }
+    .provider-table th { background:#007bff; color:#fff; }
+    .btn { padding:4px 8px; margin:2px; cursor:pointer; border:none; border-radius:4px; }
+    .btn-add { background:#28a745; color:#fff; }
+    .btn-edit { background:#ffc107; color:#000; }
+    .btn-delete { background:#dc3545; color:#fff; }
+    .filter-search { margin-bottom:10px; }
+    input, select { padding:5px; margin-right:10px; }
+    #providerModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
+    #providerModal .modal-content { background:#fff; padding:20px; border-radius:6px; width:400px; }
+    #providerModal input, #providerModal select { width:100%; margin-bottom:10px; }
+  </style>
+</head>
+<body>
+  <h1>Manage Providers</h1>
+
+  <button class="btn btn-add" id="openAddProvider">Add New Provider</button>
+
+  <div class="filter-search">
+    <input type="text" id="searchProvider" placeholder="Search by name or service">
+    <select id="filterCategory">
+      <option value="all">All Categories</option>
+    </select>
+  </div>
+
+  <table class="provider-table" id="providersTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Service</th>
+        <th>Price</th>
+        <th>Rating</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Providers will populate here -->
+    </tbody>
+  </table>
+
+  <!-- Provider Modal -->
+  <div id="providerModal">
+    <div class="modal-content">
+      <h3 id="modalTitle">Add Provider</h3>
+      <input type="text" id="providerName" placeholder="Name">
+      <input type="text" id="providerCategory" placeholder="Category">
+      <input type="text" id="providerService" placeholder="Service">
+      <input type="text" id="providerPrice" placeholder="Price (e.g., 50/hour)">
+      <input type="number" step="0.1" id="providerRating" placeholder="Rating">
+      <textarea id="providerDescription" placeholder="Description"></textarea>
+      <input type="text" id="providerImage" placeholder="Image URL">
+      <button class="btn btn-add" id="saveProvider">Save</button>
+      <button class="btn" id="cancelProvider">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    const providersTableBody = document.querySelector("#providersTable tbody");
+    const searchInput = document.getElementById("searchProvider");
+    const filterCategory = document.getElementById("filterCategory");
+    const openAddBtn = document.getElementById("openAddProvider");
+    const providerModal = document.getElementById("providerModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const saveProviderBtn = document.getElementById("saveProvider");
+    const cancelProviderBtn = document.getElementById("cancelProvider");
+
+    const token = localStorage.getItem("token");
+
+    let providers = [];
+    let editingProviderId = null;
+
+    const providerFields = {
+      name: document.getElementById("providerName"),
+      category: document.getElementById("providerCategory"),
+      service: document.getElementById("providerService"),
+      price: document.getElementById("providerPrice"),
+      rating: document.getElementById("providerRating"),
+      description: document.getElementById("providerDescription"),
+      image: document.getElementById("providerImage")
+    };
+
+    async function fetchProviders() {
+      try {
+        const res = await fetch("/api/admin/providers", { headers:{ Authorization:`Bearer ${token}` }});
+        if(!res.ok) throw new Error("Failed to fetch providers");
+        const data = await res.json();
+        providers = data.providers || [];
+        populateCategoryFilter();
+        renderProviders();
+      } catch(err) {
+        console.error(err);
+        providers = [];
+      }
+    }
+
+    function populateCategoryFilter() {
+      const categories = [...new Set(providers.map(p=>p.category))];
+      filterCategory.innerHTML = '<option value="all">All Categories</option>';
+      categories.forEach(c=>{
+        const opt = document.createElement("option");
+        opt.value = c;
+        opt.textContent = c;
+        filterCategory.appendChild(opt);
+      });
+    }
+
+    function renderProviders() {
+      const search = searchInput.value.toLowerCase();
+      const category = filterCategory.value;
+
+      providersTableBody.innerHTML = "";
+
+      providers.filter(p=> 
+        (p.name.toLowerCase().includes(search) || p.service.toLowerCase().includes(search)) &&
+        (category==="all" || p.category===category)
+      ).forEach(p=>{
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${p.id}</td>
+          <td>${p.name}</td>
+          <td>${p.category}</td>
+          <td>${p.service}</td>
+          <td>${p.price}</td>
+          <td>${p.rating}</td>
+          <td>
+            <button class="btn btn-edit" data-id="${p.id}">Edit</button>
+            <button class="btn btn-delete" data-id="${p.id}">Delete</button>
+          </td>
+        `;
+        providersTableBody.appendChild(row);
+      });
+
+      document.querySelectorAll(".btn-edit").forEach(btn=>{
+        btn.addEventListener("click", ()=>openModal(btn.dataset.id));
+      });
+      document.querySelectorAll(".btn-delete").forEach(btn=>{
+        btn.addEventListener("click", deleteProvider);
+      });
+    }
+
+    function openModal(id=null) {
+      editingProviderId = id;
+      if(id){
+        modalTitle.textContent = "Edit Provider";
+        const p = providers.find(x=>x.id==id);
+        if(!p) return;
+        Object.keys(providerFields).forEach(key => providerFields[key].value = p[key] || "");
+      } else {
+        modalTitle.textContent = "Add Provider";
+        Object.values(providerFields).forEach(f=>f.value="");
+      }
+      providerModal.style.display="flex";
+    }
+
+    cancelProviderBtn.addEventListener("click", ()=>providerModal.style.display="none");
+    openAddBtn.addEventListener("click", ()=>openModal());
+
+    async function saveProvider() {
+      const payload = {};
+      Object.keys(providerFields).forEach(key=>payload[key]=providerFields[key].value.trim());
+
+      try {
+        let res;
+        if(editingProviderId){
+          res = await fetch(`/api/admin/providers/${editingProviderId}`, {
+            method:"PUT",
+            headers: { "Content-Type":"application/json", Authorization:`Bearer ${token}` },
+            body: JSON.stringify(payload)
+          });
+        } else {
+          res = await fetch("/api/admin/providers", {
+            method:"POST",
+            headers: { "Content-Type":"application/json", Authorization:`Bearer ${token}` },
+            body: JSON.stringify(payload)
+          });
+        }
+        const data = await res.json();
+        if(res.ok){
+          providerModal.style.display="none";
+          await fetchProviders();
+        } else alert(data.error || "Failed to save provider");
+      } catch(err){ console.error(err); alert("Network error"); }
+    }
+
+    async function deleteProvider(e) {
+      if(!confirm("Delete this provider?")) return;
+      const id = e.target.dataset.id;
+      try {
+        const res = await fetch(`/api/admin/providers/${id}`, {
+          method:"DELETE",
+          headers:{ Authorization:`Bearer ${token}` }
+        });
+        const data = await res.json();
+        if(res.ok) await fetchProviders();
+        else alert(data.error || "Failed to delete provider");
+      } catch(err){ console.error(err); alert("Network error"); }
+    }
+
+    saveProviderBtn.addEventListener("click", saveProvider);
+    searchInput.addEventListener("input", renderProviders);
+    filterCategory.addEventListener("change", renderProviders);
+
+    window.addEventListener("DOMContentLoaded", fetchProviders);
+  </script>
+</body>
+</html>
